@@ -13,9 +13,19 @@ type Config struct {
 }
 
 func MustLoad() Config {
-	data, err := os.ReadFile("config/config.json")
+	path := "config/config.json"
+
+	data, err := os.ReadFile(path)
 	if err != nil {
-		panic(err)
+		if os.IsNotExist(err) {
+			path := "/app/config.json"
+			data, err = os.ReadFile(path)
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			panic(err)
+		}
 	}
 	var cfg Config
 	err = json.Unmarshal(data, &cfg)

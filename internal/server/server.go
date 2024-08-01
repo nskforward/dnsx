@@ -52,16 +52,15 @@ func (s *Server) ListenAndServe(addr string, handler func(dns.ResponseWriter, *d
 		}
 		wg.Done()
 	}()
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
+		<-sig
+		s.tcp.Shutdown()
+		s.udp.Shutdown()
+	}()
 
 	slog.Info("server listening", "addr", addr)
-
-	<-sig
-
-	s.tcp.Shutdown()
-	s.udp.Shutdown()
-
 	wg.Wait()
+	slog.Info("server stopped")
 }
