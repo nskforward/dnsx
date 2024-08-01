@@ -1,2 +1,2 @@
 # dnsx
-Library to create a DNS servers on Go
+DNS transparent proxy with response modification
