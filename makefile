@@ -8,10 +8,11 @@ deploy:
 	@echo "------------------------------------------------- DEPLOYMENT ---------------------------------------------------"
 	@echo "----------------------------------------------------------------------------------------------------------------"
 	$(eval host := ivan@85.209.2.237)
-	ssh $(host) sudo systemctl stop dns.service
-	scp ./build/app_linux_amd64 $(host):/app/app
-	scp -r ./config/config.json $(host):/app/config.json
-	ssh $(host) sudo setcap 'cap_net_bind_service=+ep' /app/app
-	ssh $(host) sudo chmod +wx /app/app
-	ssh $(host) sudo systemctl start dns.service
-	ssh $(host) sudo journalctl -u dns.service -n 30 -f
+	ssh $(host) sudo systemctl stop dnspx.service
+	scp ./build/app_linux_amd64 $(host):/app/app_linux_amd64
+	scp -r ./config/* $(host):/app/
+	scp -r ./tpl/* $(host):/app/
+	ssh $(host) sudo setcap 'cap_net_bind_service=+ep' /app/app_linux_amd64
+	ssh $(host) sudo chmod +wx /app/app_linux_amd64
+	ssh $(host) sudo systemctl start dnspx.service
+	ssh $(host) sudo journalctl -u dnspx.service -n 40 -f

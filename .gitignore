@@ -22,3 +22,5 @@ go.work
 go.work.sum
 
 build
+config
+.DS_Store

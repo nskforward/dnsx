@@ -1,8 +1,9 @@
 {
-    "addr": ":53",
-    "upstream": "77.88.8.8:53",
-    "ttl": 3600,
-    "routes": {
-        "habr.com." : "1.1.1.1"
+    "addr": ":853",
+    "domain": "net01.ru",
+    "upstream": "127.0.0.1:53",
+    "tls": {
+        "cert": "/etc/letsencrypt/live/net01.ru/fullchain.pem",
+        "key": "/etc/letsencrypt/live/net01.ru/privkey.pem"
     }
 }
